@@ -17,4 +17,16 @@ public interface WhereClauseValueProvider<T extends BuilderLogicalOperatorsProvi
     T equalsDate(String date);
 
     T equalsTimestamp(Long val);
+
+    T notEqualsString(String val);
+
+    T notEqualsLong(Long val);
+
+    T notEqualsDouble(Double val, String formatPattern);
+
+    T notEqualsBoolean(Boolean condition, String trueReplacement, String falseReplacement);
+
+    T notEqualsDate(String date);
+
+    T notEqualsTimestamp(Long val);
 }

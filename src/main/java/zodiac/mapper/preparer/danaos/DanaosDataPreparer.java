@@ -3,6 +3,7 @@ package zodiac.mapper.preparer.danaos;
 import zodiac.mapper.preparer.DataPreparer;
 import zodiac.mapper.utils.DateFormatter;
 
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Objects;
@@ -29,6 +30,7 @@ public class DanaosDataPreparer implements DataPreparer {
             doubleVal = String.valueOf(val.doubleValue());
         } else {
             NumberFormat formatter = new DecimalFormat(formatPattern);
+            formatter.setRoundingMode(RoundingMode.DOWN);
             doubleVal = formatter.format(val);
         }
         return doubleVal;

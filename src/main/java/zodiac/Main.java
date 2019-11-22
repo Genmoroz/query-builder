@@ -11,19 +11,33 @@ public class Main implements Serializable {
 
         String builder =
                 new QueryFactory(new DanaosDataPreparer())
-                        .createUpdateQuery("VESSEL_DATA")
-                        .column("DESCRIPTION").setString("SOME DESCRIPTION THIS TEXT WILL BE WITH 'QUOTE' THIS IS IN [BRACKETS]")
-                        .column("VESSEL_CODE").setLong(1241L)
-                        .column("SOLD_DATE").setDate("2019-03-25")
+                        .createUpdateQuery("TABLE_NAME")
+                        .column("SOME_TEXT").setString("Some text to 'FIRST_COLUMN'")
                         .column("TIMESTAMP").setTimestamp(1572966184855L)
-                        .column("IMO_NO").setLong(326236L)
+                        .column("ACTIVE_DATE").setDate("2019-03-25")
+                        .column("CODE").setLong(1241L)
                         .column("ACTIVE_FLAG").setBoolean(true, "Y", "N")
-                        .whereClause("GUID").equalsString("21414124-12412-412412412-41241-42")
+                        .column("IMO_NO").setDouble(9999.99999D, "#.##")
+                        .whereClause("GUID").equalsString("910fd190-4b12-a4cb-80ce-2853d923d3e7")
                         .and()
-                        .whereClause("DELIVERED").equalsDate("2011-11-25").build();
+                        .whereClause("CREATED").equalsDate("2011-11-25")
+                        .and()
+                        .whereClause("SOLD").equalsBoolean(true, "Y", "N")
+                        .or()
+                        .whereClause("TIMESTAMP").equalsTimestamp(12414141412414L)
+                        .and()
+                        .whereClause("TEMPERATURE").equalsDouble(1241.2414D, "#.####")
+                        .and()
+                        .whereClause("LENGTH").equalsLong(12414141412414L)
+                        .and()
+                        .whereClause("NULL_COLUMN").isNull()
+                        .and()
+                        .whereClause("NOT_NULL_COLUMN").nonNull()
+                        .build();
         System.out.println(builder);
 //
-//        NumberFormat formatter = new DecimalFormat("0.0");
-//        System.out.println(formatter.format(132412.214124));
+//        NumberFormat formatter = new DecimalFormat("#.0000");
+//        formatter.setRoundingMode(RoundingMode.DOWN);
+//        System.out.println(formatter.format(99999.00D));
     }
 }

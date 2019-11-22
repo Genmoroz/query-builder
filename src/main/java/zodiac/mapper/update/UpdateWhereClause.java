@@ -1,33 +1,24 @@
 package zodiac.mapper.update;
 
 import zodiac.mapper.WhereClauseValueProvider;
-import zodiac.mapper.utils.DateFormatter;
-import zodiac.mapper.utils.StringFormatter;
+import zodiac.mapper.preparer.DataPreparer;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Objects;
-import java.util.TimeZone;
-
-import static zodiac.mapper.utils.StringFormatter.formatQuotedString;
-import static zodiac.mapper.utils.StringFormatter.quote;
 
 public class UpdateWhereClause implements WhereClauseValueProvider<UpdateWhereClauseValue> {
 
     private final UpdateQuery updateQuery;
 
+    private DataPreparer preparer;
+
     UpdateWhereClause(UpdateQuery updateQuery) {
         this.updateQuery = updateQuery;
+        preparer = updateQuery.getDataPreparer();
     }
 
     @Override
     public UpdateWhereClauseValue equalsString(String val) {
-        validValue(val, "String");
-        updateQuery.query
-                .append(" = ")
-                .append(quote(formatQuotedString(val)));
-
-        return new UpdateWhereClauseValue(updateQuery);
+        return appendString(val, " = ");
     }
 
     @Override
@@ -48,66 +39,122 @@ public class UpdateWhereClause implements WhereClauseValueProvider<UpdateWhereCl
 
     @Override
     public UpdateWhereClauseValue equalsLong(Long val) {
-        validValue(val, "Long");
-        updateQuery.query
-                .append(" = ")
-                .append(val);
-
-        return new UpdateWhereClauseValue(updateQuery);
+        return appendLong(val, " = ");
     }
 
     @Override
     public UpdateWhereClauseValue equalsDouble(Double val, String formatPattern) {
-        validValue(val, "Double");
-        String doubleVal;
-        if (Objects.isNull(formatPattern)) {
-            doubleVal = String.valueOf(val.doubleValue());
-        } else {
-            NumberFormat formatter = new DecimalFormat(formatPattern);
-            doubleVal = formatter.format(val);
-        }
-        updateQuery.query
-                .append(" = ")
-                .append(doubleVal);
-
-        return new UpdateWhereClauseValue(updateQuery);
+        return appendDouble(val, formatPattern, " = ");
     }
 
     @Override
-    public UpdateWhereClauseValue equalsBoolean(Boolean condition, String trueReplacement, String falseReplacement) {
-        validValue(condition, "Boolean");
-        updateQuery.query
-                .append(" = ")
-                .append(
-                        StringFormatter.convertBooleanToStringAndQuote(condition, trueReplacement, falseReplacement)
-                );
-
-        return new UpdateWhereClauseValue(updateQuery);
+    public UpdateWhereClauseValue equalsBoolean(Boolean val, String trueReplacement, String falseReplacement) {
+        return appendBoolean(val, trueReplacement, falseReplacement, " = ");
     }
 
     @Override
     public UpdateWhereClauseValue equalsDate(String date) {
-        String preparedDate = DateFormatter.convertToDateFormat(
-                date, "yyyy-MM-dd", "dd/MM/yyyy", TimeZone.getTimeZone("UTC")
-        );
-        validValue(preparedDate, "String Date");
-        updateQuery.query
-                .append(" = ")
-                .append(preparedDate);
-
-
-        return new UpdateWhereClauseValue(updateQuery);
+        return appendDate(date, " = ");
     }
 
     @Override
     public UpdateWhereClauseValue equalsTimestamp(Long val) {
-        String preparedTimestamp = DateFormatter.convertToTimestampFormat(
-                val, "dd/MM/yyyy HH:mm:ss", "DD/MM/YYYY HH24:MI:SS", TimeZone.getTimeZone("UTC")
-        );
-        validValue(preparedTimestamp, "String Timestamp");
+        return appendTimestamp(val, " = ");
+
+    }
+
+    @Override
+    public UpdateWhereClauseValue notEqualsString(String val) {
+        return appendString(val, " <> ");
+    }
+
+    @Override
+    public UpdateWhereClauseValue notEqualsLong(Long val) {
+        return appendLong(val, " <> ");
+    }
+
+    @Override
+    public UpdateWhereClauseValue notEqualsDouble(Double val, String formatPattern) {
+        return appendDouble(val, formatPattern, " <> ");
+    }
+
+    @Override
+    public UpdateWhereClauseValue notEqualsBoolean(Boolean val, String trueReplacement, String falseReplacement) {
+        return appendBoolean(val, trueReplacement, falseReplacement, " <> ");
+    }
+
+    @Override
+    public UpdateWhereClauseValue notEqualsDate(String val) {
+        return appendDate(val, " <> ");
+    }
+
+    @Override
+    public UpdateWhereClauseValue notEqualsTimestamp(Long val) {
+        return appendTimestamp(val, " <> ");
+    }
+
+    private UpdateWhereClauseValue appendString(String val, String equalityCondition) {
+        String preparedVal = preparer.prepareString(val);
+        validValue(preparedVal, "String");
+
         updateQuery.query
-                .append(" = ")
-                .append(preparedTimestamp);
+                .append(equalityCondition)
+                .append(preparedVal);
+
+        return new UpdateWhereClauseValue(updateQuery);
+    }
+
+    private UpdateWhereClauseValue appendLong(Long val, String equalityCondition) {
+        String preparedVal = preparer.prepareLong(val);
+        validValue(preparedVal, "Long");
+
+        updateQuery.query
+                .append(equalityCondition)
+                .append(preparedVal);
+
+        return new UpdateWhereClauseValue(updateQuery);
+    }
+
+    private UpdateWhereClauseValue appendDouble(Double val, String formatPattern, String equalityCondition) {
+        String preparedVal = preparer.prepareDouble(val, formatPattern);
+        validValue(preparedVal, "Double");
+
+        updateQuery.query
+                .append(equalityCondition)
+                .append(preparedVal);
+
+        return new UpdateWhereClauseValue(updateQuery);
+    }
+
+    private UpdateWhereClauseValue appendBoolean(Boolean val, String trueReplacement, String falseReplacement, String equalityCondition) {
+        String preparedVal = preparer.prepareBoolean(val, trueReplacement, falseReplacement);
+        validValue(preparedVal, "Boolean");
+
+        updateQuery.query
+                .append(equalityCondition)
+                .append(preparedVal);
+
+        return new UpdateWhereClauseValue(updateQuery);
+    }
+
+    private UpdateWhereClauseValue appendDate(String date, String equalityCondition) {
+        String preparedVal = preparer.prepareDate(date);
+        validValue(preparedVal, "String Date");
+
+        updateQuery.query
+                .append(equalityCondition)
+                .append(preparedVal);
+
+        return new UpdateWhereClauseValue(updateQuery);
+    }
+
+    private UpdateWhereClauseValue appendTimestamp(Long val, String equalityCondition) {
+        String preparedVal = preparer.prepareTimestamp(val);
+        validValue(preparedVal, "String Timestamp");
+
+        updateQuery.query
+                .append(equalityCondition)
+                .append(preparedVal);
 
         return new UpdateWhereClauseValue(updateQuery);
     }

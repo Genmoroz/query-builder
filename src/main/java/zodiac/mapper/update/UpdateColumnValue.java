@@ -7,8 +7,6 @@ import java.util.Objects;
 
 public class UpdateColumnValue implements ColumnProvider<UpdateColumn>, WhereClauseProvider<UpdateWhereClause> {
 
-    private static boolean isFirstWhereClause = true;
-
     private final UpdateQuery updateQuery;
 
     UpdateColumnValue(UpdateQuery updateQuery) {
@@ -29,11 +27,11 @@ public class UpdateColumnValue implements ColumnProvider<UpdateColumn>, WhereCla
 
     @Override
     public UpdateWhereClause whereClause(String columnName) {
-        if (isFirstWhereClause) {
+        if (updateQuery.isFirstWhereClause) {
             updateQuery.query
                     .append(" WHERE ")
                     .append(columnName);
-            isFirstWhereClause = false;
+            updateQuery.isFirstWhereClause = false;
         } else {
             updateQuery.query
                     .append(" ")

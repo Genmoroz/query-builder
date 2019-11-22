@@ -9,6 +9,8 @@ public class UpdateQuery implements ColumnProvider<UpdateColumn> {
 
     private final DataPreparer dataPreparer;
 
+    boolean isFirstWhereClause;
+
     StringBuilder query;
 
     public UpdateQuery(String tableName, DataPreparer dataPreparer) {
@@ -19,7 +21,9 @@ public class UpdateQuery implements ColumnProvider<UpdateColumn> {
             throw new IllegalArgumentException("The table name cannot be null or empty");
         }
 
+        isFirstWhereClause = true;
         this.dataPreparer = dataPreparer;
+
         query = new StringBuilder("UPDATE ")
                 .append(tableName)
                 .append(" SET ");
