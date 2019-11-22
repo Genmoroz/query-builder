@@ -1,6 +1,6 @@
 package zodiac.mapper.insert;
 
-import zodiac.mapper.core.ColumnProvider;
+import zodiac.mapper.ColumnProvider;
 
 public interface InsertQuery extends ColumnProvider<InsertColumn> {
 }

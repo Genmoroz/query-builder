@@ -1,4 +1,4 @@
-package zodiac.mapper.core;
+package zodiac.mapper;
 
 public interface Builder {
 

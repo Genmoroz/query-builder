@@ -7,14 +7,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Objects;
 import java.util.TimeZone;
-import java.util.logging.Logger;
 
 import static zodiac.mapper.utils.StringFormatter.quote;
 
 public class DateFormatter {
-
-    private static final Logger logger = Logger.getLogger(DateFormatter.class.getName());
-//    private static final Logger logger = LoggerFactory.getLogger(DateFormatter.class);
 
     public static String convertToTimestampFormat(Long val, String targetPattern, String databasePattern, TimeZone timeZone) {
         if (Objects.isNull(val)) {

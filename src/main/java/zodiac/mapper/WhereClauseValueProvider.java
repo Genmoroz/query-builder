@@ -1,6 +1,6 @@
-package zodiac.mapper.core;
+package zodiac.mapper;
 
-public interface WhereClauseValueProvider<T extends BuilderLogicalProvider> {
+public interface WhereClauseValueProvider<T extends BuilderLogicalOperatorsProvider> {
 
     T equalsString(String val);
 

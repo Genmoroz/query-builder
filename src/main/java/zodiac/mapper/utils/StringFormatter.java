@@ -5,6 +5,9 @@ import java.util.Objects;
 public class StringFormatter {
 
     public static String formatQuotedString(String str) {
+        if (Objects.isNull(str)) {
+            return null;
+        }
         return str
                 .replace("''", "'")
                 .replace("'", "''");
