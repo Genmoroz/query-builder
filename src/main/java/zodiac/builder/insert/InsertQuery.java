@@ -1,7 +1,7 @@
-package zodiac.mapper.insert;
+package zodiac.builder.insert;
 
-import zodiac.mapper.ColumnProvider;
-import zodiac.mapper.preparer.DataPreparer;
+import zodiac.builder.ColumnProvider;
+import zodiac.builder.preparer.DataPreparer;
 
 import java.util.ArrayList;
 import java.util.List;

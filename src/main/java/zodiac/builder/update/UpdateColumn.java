@@ -1,7 +1,7 @@
-package zodiac.mapper.update;
+package zodiac.builder.update;
 
-import zodiac.mapper.ColumnValueProvider;
-import zodiac.mapper.preparer.DataPreparer;
+import zodiac.builder.ColumnValueProvider;
+import zodiac.builder.preparer.DataPreparer;
 
 import java.util.function.Supplier;
 

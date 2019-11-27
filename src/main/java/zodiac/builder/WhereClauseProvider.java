@@ -1,4 +1,4 @@
-package zodiac.mapper;
+package zodiac.builder;
 
 public interface WhereClauseProvider<T extends WhereClauseValueProvider> {
 

@@ -1,4 +1,4 @@
-package zodiac.mapper.update;
+package zodiac.builder.update;
 
 public class UpdateWhereClauseValue implements BuilderLogicalOperatorsProvider {
 

@@ -1,7 +1,7 @@
-package zodiac.mapper.preparer.danaos;
+package zodiac.builder.preparer.danaos;
 
-import zodiac.mapper.preparer.DataPreparer;
-import zodiac.mapper.preparer.utils.DateFormatter;
+import zodiac.builder.preparer.DataPreparer;
+import zodiac.builder.preparer.utils.DateFormatter;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -9,9 +9,9 @@ import java.text.NumberFormat;
 import java.util.Objects;
 import java.util.TimeZone;
 
-import static zodiac.mapper.preparer.utils.StringFormatter.convertBooleanToStringAndQuote;
-import static zodiac.mapper.preparer.utils.StringFormatter.formatQuotedString;
-import static zodiac.mapper.preparer.utils.StringFormatter.quote;
+import static zodiac.builder.preparer.utils.StringFormatter.convertBooleanToStringAndQuote;
+import static zodiac.builder.preparer.utils.StringFormatter.formatQuotedString;
+import static zodiac.builder.preparer.utils.StringFormatter.quote;
 
 public class DanaosDataPreparer implements DataPreparer {
 

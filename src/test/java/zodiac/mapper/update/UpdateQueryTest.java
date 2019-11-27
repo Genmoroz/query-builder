@@ -7,8 +7,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
-import zodiac.mapper.QueryFactory;
-import zodiac.mapper.preparer.danaos.DanaosDataPreparer;
+import zodiac.builder.QueryFactory;
+import zodiac.builder.preparer.danaos.DanaosDataPreparer;
+import zodiac.builder.update.UpdateWhereClause;
 
 import java.util.function.Consumer;
 import java.util.regex.Matcher;

@@ -1,4 +1,4 @@
-package zodiac.mapper.preparer.utils;
+package zodiac.builder.preparer.utils;
 
 import java.util.Objects;
 

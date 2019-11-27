@@ -1,8 +1,8 @@
-package zodiac.mapper;
+package zodiac.builder;
 
-import zodiac.mapper.insert.InsertQuery;
-import zodiac.mapper.preparer.DataPreparer;
-import zodiac.mapper.update.UpdateQuery;
+import zodiac.builder.insert.InsertQuery;
+import zodiac.builder.preparer.DataPreparer;
+import zodiac.builder.update.UpdateQuery;
 
 import java.util.Objects;
 

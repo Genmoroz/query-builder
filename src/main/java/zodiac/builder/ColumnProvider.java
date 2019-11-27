@@ -1,4 +1,4 @@
-package zodiac.mapper;
+package zodiac.builder;
 
 public interface ColumnProvider<T extends ColumnValueProvider> {
 

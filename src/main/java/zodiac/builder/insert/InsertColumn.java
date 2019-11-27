@@ -1,7 +1,7 @@
-package zodiac.mapper.insert;
+package zodiac.builder.insert;
 
-import zodiac.mapper.ColumnValueProvider;
-import zodiac.mapper.preparer.DataPreparer;
+import zodiac.builder.ColumnValueProvider;
+import zodiac.builder.preparer.DataPreparer;
 
 public class InsertColumn implements ColumnValueProvider<InsertColumnValue> {
 

@@ -1,4 +1,4 @@
-package zodiac.mapper.preparer;
+package zodiac.builder.preparer;
 
 public interface DataPreparer {
 

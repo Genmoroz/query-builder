@@ -1,8 +1,8 @@
-package zodiac.mapper.update;
+package zodiac.builder.update;
 
-import zodiac.mapper.Builder;
-import zodiac.mapper.ColumnProvider;
-import zodiac.mapper.WhereClauseProvider;
+import zodiac.builder.Builder;
+import zodiac.builder.ColumnProvider;
+import zodiac.builder.WhereClauseProvider;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package zodiac.mapper.preparer.utils;
+package zodiac.builder.preparer.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,7 +8,7 @@ import java.util.GregorianCalendar;
 import java.util.Objects;
 import java.util.TimeZone;
 
-import static zodiac.mapper.preparer.utils.StringFormatter.quote;
+import static zodiac.builder.preparer.utils.StringFormatter.quote;
 
 public class DateFormatter {
 
