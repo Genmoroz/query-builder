@@ -9,6 +9,8 @@ public interface DataPreparer {
      */
     String prepareDouble(Double val, String formatPattern);
 
+    String prepareInteger(Integer val);
+
     String prepareLong(Long val);
 
     String prepareBoolean(Boolean condition, String trueReplacement, String falseReplacement);

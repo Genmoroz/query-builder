@@ -1,4 +1,4 @@
-package zodiac.mapper.utils;
+package zodiac.mapper.preparer.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,7 +8,7 @@ import java.util.GregorianCalendar;
 import java.util.Objects;
 import java.util.TimeZone;
 
-import static zodiac.mapper.utils.StringFormatter.quote;
+import static zodiac.mapper.preparer.utils.StringFormatter.quote;
 
 public class DateFormatter {
 
@@ -24,7 +24,7 @@ public class DateFormatter {
 
         String timestamp = sdf.format(calendar.getTime());
 
-        return String.format("CAST( TO_TIMESTAMP( %s, '%s' ) AS DATE )", quote(timestamp), databasePattern);
+        return String.format("CAST(TO_TIMESTAMP(%s, '%s') AS DATE)", quote(timestamp), databasePattern);
     }
 
     public static String convertToDateFormat(String val, String sourcePattern, String targetPattern, TimeZone timeZone) {
@@ -48,6 +48,6 @@ public class DateFormatter {
 
         sdf = new SimpleDateFormat(targetPattern);
 
-        return String.format("CAST( TO_DATE( %s, '%s' ) AS DATE )", quote(sdf.format(date)), targetPattern.toUpperCase());
+        return String.format("CAST(TO_DATE(%s, '%s') AS DATE)", quote(sdf.format(date)), targetPattern.toUpperCase());
     }
 }

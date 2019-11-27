@@ -1,6 +1,6 @@
 package zodiac.mapper;
 
-public interface Or {
+public interface Or<T extends WhereClauseProvider> {
 
-    WhereClauseProvider or();
+    T or();
 }

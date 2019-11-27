@@ -4,6 +4,7 @@ import zodiac.mapper.WhereClauseValueProvider;
 import zodiac.mapper.preparer.DataPreparer;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
 public class UpdateWhereClause implements WhereClauseValueProvider<UpdateWhereClauseValue> {
 
@@ -23,18 +24,23 @@ public class UpdateWhereClause implements WhereClauseValueProvider<UpdateWhereCl
 
     @Override
     public UpdateWhereClauseValue isNull() {
-        updateQuery.query
-                .append(" IS NULL ");
+        updateQuery
+                .append(" IS NULL");
 
         return new UpdateWhereClauseValue(updateQuery);
     }
 
     @Override
     public UpdateWhereClauseValue nonNull() {
-        updateQuery.query
-                .append(" IS NOT NULL ");
+        updateQuery
+                .append(" IS NOT NULL");
 
         return new UpdateWhereClauseValue(updateQuery);
+    }
+
+    @Override
+    public UpdateWhereClauseValue equalsInteger(Integer val) {
+        return appendInteger(val, " = ");
     }
 
     @Override
@@ -53,19 +59,23 @@ public class UpdateWhereClause implements WhereClauseValueProvider<UpdateWhereCl
     }
 
     @Override
-    public UpdateWhereClauseValue equalsDate(String date) {
-        return appendDate(date, " = ");
+    public UpdateWhereClauseValue equalsDate(String val) {
+        return appendDate(val, " = ");
     }
 
     @Override
     public UpdateWhereClauseValue equalsTimestamp(Long val) {
         return appendTimestamp(val, " = ");
-
     }
 
     @Override
     public UpdateWhereClauseValue notEqualsString(String val) {
         return appendString(val, " <> ");
+    }
+
+    @Override
+    public UpdateWhereClauseValue notEqualsInteger(Integer val) {
+        return appendInteger(val, " <> ");
     }
 
     @Override
@@ -93,75 +103,99 @@ public class UpdateWhereClause implements WhereClauseValueProvider<UpdateWhereCl
         return appendTimestamp(val, " <> ");
     }
 
+    @Override
+    public UpdateWhereClauseValue moreThanInteger(Integer val) {
+        return appendInteger(val, " > ");
+    }
+
+    @Override
+    public UpdateWhereClauseValue lessThanInteger(Integer val) {
+        return appendInteger(val, " < ");
+    }
+
+    @Override
+    public UpdateWhereClauseValue moreThanLong(Long val) {
+        return appendLong(val, " > ");
+    }
+
+    @Override
+    public UpdateWhereClauseValue lessThanLong(Long val) {
+        return appendLong(val, " < ");
+    }
+
+    @Override
+    public UpdateWhereClauseValue moreThanDouble(Double val, String formatPattern) {
+        return appendDouble(val, formatPattern, " > ");
+    }
+
+    @Override
+    public UpdateWhereClauseValue lessThanDouble(Double val, String formatPattern) {
+        return appendDouble(val, formatPattern, " < ");
+    }
+
     private UpdateWhereClauseValue appendString(String val, String equalityCondition) {
-        String preparedVal = preparer.prepareString(val);
-        validValue(preparedVal, "String");
+        Supplier<String> supplier =
+                () -> preparer.prepareString(val);
 
-        updateQuery.query
-                .append(equalityCondition)
-                .append(preparedVal);
+        return appendValue(supplier, equalityCondition, String.class.getSimpleName());
+    }
 
-        return new UpdateWhereClauseValue(updateQuery);
+    private UpdateWhereClauseValue appendInteger(Integer val, String equalityCondition) {
+        Supplier<String> supplier =
+                () -> preparer.prepareInteger(val);
+
+        return appendValue(supplier, equalityCondition, Integer.class.getSimpleName());
     }
 
     private UpdateWhereClauseValue appendLong(Long val, String equalityCondition) {
-        String preparedVal = preparer.prepareLong(val);
-        validValue(preparedVal, "Long");
+        Supplier<String> supplier =
+                () -> preparer.prepareLong(val);
 
-        updateQuery.query
-                .append(equalityCondition)
-                .append(preparedVal);
-
-        return new UpdateWhereClauseValue(updateQuery);
+        return appendValue(supplier, equalityCondition, Long.class.getSimpleName());
     }
 
     private UpdateWhereClauseValue appendDouble(Double val, String formatPattern, String equalityCondition) {
-        String preparedVal = preparer.prepareDouble(val, formatPattern);
-        validValue(preparedVal, "Double");
+        Supplier<String> supplier =
+                () -> preparer.prepareDouble(val, formatPattern);
 
-        updateQuery.query
-                .append(equalityCondition)
-                .append(preparedVal);
-
-        return new UpdateWhereClauseValue(updateQuery);
+        return appendValue(supplier, equalityCondition, Double.class.getSimpleName());
     }
 
     private UpdateWhereClauseValue appendBoolean(Boolean val, String trueReplacement, String falseReplacement, String equalityCondition) {
-        String preparedVal = preparer.prepareBoolean(val, trueReplacement, falseReplacement);
-        validValue(preparedVal, "Boolean");
+        Supplier<String> supplier =
+                () -> preparer.prepareBoolean(val, trueReplacement, falseReplacement);
 
-        updateQuery.query
-                .append(equalityCondition)
-                .append(preparedVal);
-
-        return new UpdateWhereClauseValue(updateQuery);
+        return appendValue(supplier, equalityCondition, Boolean.class.getSimpleName());
     }
 
-    private UpdateWhereClauseValue appendDate(String date, String equalityCondition) {
-        String preparedVal = preparer.prepareDate(date);
-        validValue(preparedVal, "String Date");
+    private UpdateWhereClauseValue appendDate(String val, String equalityCondition) {
+        Supplier<String> supplier =
+                () -> preparer.prepareDate(val);
 
-        updateQuery.query
-                .append(equalityCondition)
-                .append(preparedVal);
-
-        return new UpdateWhereClauseValue(updateQuery);
+        return appendValue(supplier, equalityCondition, "String Date");
     }
 
     private UpdateWhereClauseValue appendTimestamp(Long val, String equalityCondition) {
-        String preparedVal = preparer.prepareTimestamp(val);
-        validValue(preparedVal, "String Timestamp");
+        Supplier<String> supplier =
+                () -> preparer.prepareTimestamp(val);
 
-        updateQuery.query
+        return appendValue(supplier, equalityCondition, "String Timestamp");
+    }
+
+    private UpdateWhereClauseValue appendValue(Supplier<String> supplier, String equalityCondition, String valueType) {
+        String val = supplier.get();
+        validValue(val, valueType);
+
+        updateQuery
                 .append(equalityCondition)
-                .append(preparedVal);
+                .append(val);
 
         return new UpdateWhereClauseValue(updateQuery);
     }
 
-    private <T> void validValue(T val, String valueClass) {
+    private <T> void validValue(T val, String valueType) {
         if (Objects.isNull(val)) {
-            throw new NullPointerException(valueClass + " value cannot be null");
+            throw new NullPointerException(valueType + " value cannot be null");
         }
     }
 }

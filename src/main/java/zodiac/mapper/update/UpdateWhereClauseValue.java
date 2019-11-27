@@ -1,10 +1,6 @@
 package zodiac.mapper.update;
 
-import zodiac.mapper.Builder;
-import zodiac.mapper.BuilderLogicalOperatorsProvider;
-import zodiac.mapper.WhereClauseProvider;
-
-public class UpdateWhereClauseValue implements BuilderLogicalOperatorsProvider, Builder {
+public class UpdateWhereClauseValue implements BuilderLogicalOperatorsProvider {
 
     private final UpdateQuery updateQuery;
 
@@ -13,16 +9,16 @@ public class UpdateWhereClauseValue implements BuilderLogicalOperatorsProvider, 
     }
 
     @Override
-    public WhereClauseProvider and() {
-        updateQuery.query
+    public UpdateColumnValue and() {
+        updateQuery
                 .append(" AND");
 
         return new UpdateColumnValue(updateQuery);
     }
 
     @Override
-    public WhereClauseProvider or() {
-        updateQuery.query
+    public UpdateColumnValue or() {
+        updateQuery
                 .append(" OR");
 
         return new UpdateColumnValue(updateQuery);

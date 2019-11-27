@@ -1,12 +1,14 @@
 package zodiac.mapper;
 
-public interface WhereClauseValueProvider<T extends BuilderLogicalOperatorsProvider> {
+public interface WhereClauseValueProvider<T extends LogicalOperatorsProvider> {
 
     T equalsString(String val);
 
     T isNull();
 
     T nonNull();
+
+    T equalsInteger(Integer val);
 
     T equalsLong(Long val);
 
@@ -20,6 +22,8 @@ public interface WhereClauseValueProvider<T extends BuilderLogicalOperatorsProvi
 
     T notEqualsString(String val);
 
+    T notEqualsInteger(Integer val);
+
     T notEqualsLong(Long val);
 
     T notEqualsDouble(Double val, String formatPattern);
@@ -29,4 +33,16 @@ public interface WhereClauseValueProvider<T extends BuilderLogicalOperatorsProvi
     T notEqualsDate(String date);
 
     T notEqualsTimestamp(Long val);
+
+    T moreThanInteger(Integer val);
+
+    T lessThanInteger(Integer val);
+
+    T moreThanLong(Long val);
+
+    T lessThanLong(Long val);
+
+    T moreThanDouble(Double val, String formatPattern);
+
+    T lessThanDouble(Double val, String formatPattern);
 }

@@ -1,7 +1,6 @@
 package zodiac.mapper;
 
 import zodiac.mapper.insert.InsertQuery;
-import zodiac.mapper.insert.impl.InsertQueryImpl;
 import zodiac.mapper.preparer.DataPreparer;
 import zodiac.mapper.update.UpdateQuery;
 
@@ -23,7 +22,7 @@ public class QueryFactory {
     }
 
     public InsertQuery createInsertQuery(String tableName) {
-        return new InsertQueryImpl(tableName);
+        return new InsertQuery(tableName, dataPreparer);
     }
 
     public DataPreparer getDataPreparer() {

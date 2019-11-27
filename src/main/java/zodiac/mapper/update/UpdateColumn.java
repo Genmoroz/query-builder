@@ -3,6 +3,8 @@ package zodiac.mapper.update;
 import zodiac.mapper.ColumnValueProvider;
 import zodiac.mapper.preparer.DataPreparer;
 
+import java.util.function.Supplier;
+
 public class UpdateColumn implements ColumnValueProvider<UpdateColumnValue> {
 
     private final UpdateQuery updateQuery;
@@ -16,54 +18,64 @@ public class UpdateColumn implements ColumnValueProvider<UpdateColumnValue> {
 
     @Override
     public UpdateColumnValue setString(String val) {
-        updateQuery.query
-                .append(" = ")
-                .append(preparer.prepareString(val));
+        return setValue(
+                () -> preparer.prepareString(val)
+        );
+    }
 
-        return new UpdateColumnValue(updateQuery);
+    @Override
+    public UpdateColumnValue setInteger(Integer val) {
+        return setValue(
+                () -> preparer.prepareInteger(val)
+        );
     }
 
     @Override
     public UpdateColumnValue setLong(Long val) {
-        updateQuery.query
-                .append(" = ")
-                .append(preparer.prepareLong(val));
-
-        return new UpdateColumnValue(updateQuery);
+        return setValue(
+                () -> preparer.prepareLong(val)
+        );
     }
 
     @Override
     public UpdateColumnValue setDouble(Double val, String formatPattern) {
-        updateQuery.query
-                .append(" = ")
-                .append(preparer.prepareDouble(val, formatPattern));
-
-        return new UpdateColumnValue(updateQuery);
+        return setValue(
+                () -> preparer.prepareDouble(val, formatPattern)
+        );
     }
 
     @Override
-    public UpdateColumnValue setBoolean(Boolean condition, String trueReplacement, String falseReplacement) {
-        updateQuery.query
-                .append(" = ")
-                .append(preparer.prepareBoolean(condition, trueReplacement, falseReplacement));
-
-        return new UpdateColumnValue(updateQuery);
+    public UpdateColumnValue setBoolean(Boolean val, String trueReplacement, String falseReplacement) {
+        return setValue(
+                () -> preparer.prepareBoolean(val, trueReplacement, falseReplacement)
+        );
     }
 
     @Override
-    public UpdateColumnValue setDate(String stringDate) {
-        updateQuery.query
-                .append(" = ")
-                .append(preparer.prepareDate(stringDate));
-
-        return new UpdateColumnValue(updateQuery);
+    public UpdateColumnValue setDate(String val) {
+        return setValue(
+                () -> preparer.prepareDate(val)
+        );
     }
 
     @Override
     public UpdateColumnValue setTimestamp(Long val) {
-        updateQuery.query
+        return setValue(
+                () -> preparer.prepareTimestamp(val)
+        );
+    }
+
+    @Override
+    public UpdateColumnValue setRawString(String val) {
+        return setValue(
+                () -> val
+        );
+    }
+
+    private UpdateColumnValue setValue(Supplier<String> supplier) {
+        updateQuery
                 .append(" = ")
-                .append(preparer.prepareTimestamp(val));
+                .append(supplier.get());
 
         return new UpdateColumnValue(updateQuery);
     }

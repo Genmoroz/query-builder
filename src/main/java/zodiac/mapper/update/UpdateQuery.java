@@ -8,10 +8,9 @@ import java.util.Objects;
 public class UpdateQuery implements ColumnProvider<UpdateColumn> {
 
     private final DataPreparer dataPreparer;
+    private final StringBuilder query;
 
     boolean isFirstWhereClause;
-
-    StringBuilder query;
 
     public UpdateQuery(String tableName, DataPreparer dataPreparer) {
         if (Objects.isNull(dataPreparer)) {
@@ -37,6 +36,11 @@ public class UpdateQuery implements ColumnProvider<UpdateColumn> {
         query.append(columnName);
 
         return new UpdateColumn(this);
+    }
+
+    UpdateQuery append(Object val) {
+        query.append(val);
+        return this;
     }
 
     String getQuery() {
