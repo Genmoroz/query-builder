@@ -21,10 +21,7 @@ class UpdateQueryTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/correct-update-query.sql", delimiter = '\n')
     void correctQuery(String expectedQuery) {
-        long start = System.nanoTime();
-        String actualQuery = null;
-        for (int i = 0; i < 100_000; i++) {
-            actualQuery =
+        String actualQuery =
                     new QueryFactory(new DanaosDataPreparer())
                             .createUpdateQuery("TABLE_NAME")
                             .column("SOME_TEXT").setString("Some text to 'FIRST_COLUMN'")
@@ -79,9 +76,7 @@ class UpdateQueryTest {
                             .or()
                             .whereClause("LESS_THAN_DOUBLE").lessThanDouble(2141241.124124D, "#.#######")
                             .build();
-        }
-        long finish = System.nanoTime() - start;
-        System.out.println(finish / 1_000_000_000);
+
         assertQueries(expectedQuery, actualQuery);
     }
 
