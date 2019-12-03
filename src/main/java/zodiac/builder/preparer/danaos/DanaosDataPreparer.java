@@ -20,6 +20,14 @@ public class DanaosDataPreparer implements DataPreparer {
         return quote(formatQuotedString(str));
     }
 
+    /**
+     * @param formatPattern should be in [#.###] format (without square brackets)
+     *  Examples:
+     *     value: 1452.99414           format: #.#              result: 1452.9
+     *     value: 2.0                  format: #.###            result: 2
+     *     value: 2.099990             format: #.#              result: 2
+     *     value: 14.123987            format: #.###            result: 14.123
+     */
     @Override
     public String prepareDouble(Double val, String formatPattern) {
         if (Objects.isNull(val)) {
@@ -41,7 +49,7 @@ public class DanaosDataPreparer implements DataPreparer {
         if (Objects.isNull(val)) {
             return null;
         }
-        return String.valueOf(val.longValue());
+        return String.valueOf(val.intValue());
     }
 
     @Override

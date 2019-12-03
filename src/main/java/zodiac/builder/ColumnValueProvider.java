@@ -1,6 +1,6 @@
 package zodiac.builder;
 
-public interface ColumnValueProvider<T extends ColumnProvider> {
+public interface ColumnValueProvider<T extends ColumnProvider<?>> {
 
     T setString(String val);
 

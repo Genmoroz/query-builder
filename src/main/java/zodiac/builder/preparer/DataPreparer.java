@@ -4,9 +4,6 @@ public interface DataPreparer {
 
     String prepareString(String val);
 
-    /**
-     * @param formatPattern should be in [#.##] or [##.####] format (without square brackets)
-     */
     String prepareDouble(Double val, String formatPattern);
 
     String prepareInteger(Integer val);

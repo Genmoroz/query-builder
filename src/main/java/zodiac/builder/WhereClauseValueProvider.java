@@ -1,6 +1,6 @@
 package zodiac.builder;
 
-public interface WhereClauseValueProvider<T extends LogicalOperatorsProvider> {
+public interface WhereClauseValueProvider<T extends LogicalOperatorsProvider<?>> {
 
     T equalsString(String val);
 
