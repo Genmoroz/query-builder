@@ -52,7 +52,7 @@ public class QueryFactory {
      *                              .createInsertQuery("TABLE_NAME")
      *                              .column("TEXT_COLUMN").setString("Some text")
      *                              .column("INTEGER_COLUMN").setInteger(1996)
-     *                              build();
+     *                              .build();
      *  </code>
      */
     public InsertQuery createInsertQuery(String tableName) {
