@@ -1,37 +1,32 @@
 package zodiac.builder.update;
 
-import java.util.Objects;
+class UpdatePool {
 
-public class UpdatePool {
+    private final UpdateColumn updateColumn;
+    private final UpdateColumnValue updateColumnValue;
+    private final UpdateWhereClause updateWhereClause;
+    private final UpdateWhereClauseValue updateWhereClauseValue;
 
-    private final UpdateQuery updateQuery;
-
-    private UpdateColumn updateColumn;
-    private UpdateColumnValue updateColumnValue;
-    private UpdateWhereClause updateWhereClause;
-    private UpdateWhereClauseValue updateWhereClauseValue;
-
-    public UpdatePool(UpdateQuery updateQuery) {
-        this.updateQuery = updateQuery;
+    UpdatePool(UpdateQuery updateQuery) {
+        updateColumn = new UpdateColumn(updateQuery);
+        updateColumnValue = new UpdateColumnValue(updateQuery);
+        updateWhereClause = new UpdateWhereClause(updateQuery);
+        updateWhereClauseValue = new UpdateWhereClauseValue(updateQuery);
     }
 
-    public UpdateColumn getUpdateColumn() {
-        return Objects.isNull(updateColumn) ?
-                updateColumn = new UpdateColumn(updateQuery) : updateColumn;
+    UpdateColumn getUpdateColumn() {
+        return updateColumn;
     }
 
-    public UpdateColumnValue getUpdateColumnValue() {
-        return Objects.isNull(updateColumnValue) ?
-                updateColumnValue = new UpdateColumnValue(updateQuery) : updateColumnValue;
+    UpdateColumnValue getUpdateColumnValue() {
+        return updateColumnValue;
     }
 
-    public UpdateWhereClause getUpdateWhereClause() {
-        return Objects.isNull(updateWhereClause) ?
-                updateWhereClause = new UpdateWhereClause(updateQuery) : updateWhereClause;
+    UpdateWhereClause getUpdateWhereClause() {
+        return updateWhereClause;
     }
 
-    public UpdateWhereClauseValue getUpdateWhereClauseValue() {
-        return Objects.isNull(updateWhereClauseValue) ?
-                updateWhereClauseValue = new UpdateWhereClauseValue(updateQuery) : updateWhereClauseValue;
+    UpdateWhereClauseValue getUpdateWhereClauseValue() {
+        return updateWhereClauseValue;
     }
 }

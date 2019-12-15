@@ -27,7 +27,7 @@ class UpdateQueryTest {
     }
 
     @Test
-    void executingTime() {
+    void performanceTest() {
         short iterationNumber = 10_000;
         long startTime = System.nanoTime();
         for (int step = 0; step < iterationNumber; step++) {
