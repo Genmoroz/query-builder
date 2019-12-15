@@ -22,63 +22,22 @@ class UpdateQueryTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/correct-update-query.sql", delimiter = '\n')
     void correctQuery(String expectedQuery) {
-        String actualQuery =
-                    new QueryFactory(new DanaosDataPreparer())
-                            .createUpdateQuery("TABLE_NAME")
-                            .column("SOME_TEXT").setString("Some text to 'FIRST_COLUMN'")
-                            .column("INTEGER_COLUMN").setInteger(213412)
-                            .column("TIMESTAMP").setTimestamp(1572966184855L)
-                            .column("ACTIVE_DATE").setDate("2019-03-25")
-                            .column("CODE").setLong(1241L)
-                            .column("ACTIVE_FLAG").setBoolean(true, "Y", "N")
-                            .column("IMO_NO").setDouble(9999.99999D, "#.##")
-                            .column("RAW_COLUMN").setRawString("SEQUENCE.NEXTVAL")
-                            .whereClause("GUID").equalsString("910fd190-4b12-a4cb-80ce-2853d923d3e7")
-                            .and()
-                            .whereClause("CREATED").equalsDate("2011-11-25")
-                            .and()
-                            .whereClause("COUNT_COLUMN").equalsInteger(1241412)
-                            .and()
-                            .whereClause("SOLD").equalsBoolean(true, "Y", "N")
-                            .or()
-                            .whereClause("TIMESTAMP").equalsTimestamp(12414141412414L)
-                            .and()
-                            .whereClause("TEMPERATURE").equalsDouble(1241.2414D, "#.##")
-                            .and()
-                            .whereClause("LENGTH").equalsLong(12414141412414L)
-                            .and()
-                            .whereClause("NULL_COLUMN").isNull()
-                            .and()
-                            .whereClause("NOT_NULL_COLUMN").nonNull()
-                            .and()
-                            .whereClause("COUNTRY").notEqualsString("Russian")
-                            .and()
-                            .whereClause("NOT_EQUALS_INTEGER_COLUMN").notEqualsInteger(12421412)
-                            .or()
-                            .whereClause("SOLD").notEqualsBoolean(true, "Y", "N")
-                            .and()
-                            .whereClause("LAST_UPDATED_AT").notEqualsLong(12412412421L)
-                            .or()
-                            .whereClause("HEIGHT").notEqualsDouble(21414.25323D, "#.##")
-                            .or()
-                            .whereClause("DATE_COLUMN").notEqualsDate("2011-11-25")
-                            .and()
-                            .whereClause("TIMESTAMP_COLUMN").notEqualsTimestamp(124124124L)
-                            .and()
-                            .whereClause("MORE_THAN_INTEGER_COLUMN").moreThanInteger(124141241)
-                            .and()
-                            .whereClause("MORE_THAN_LONG_COLUMN").moreThanLong(241241241L)
-                            .or()
-                            .whereClause("MORE_THAN_DOUBLE").moreThanDouble(2141241.124124D, "#.#######")
-                            .and()
-                            .whereClause("LESS_THAN_INTEGER_COLUMN").lessThanInteger(124141241)
-                            .and()
-                            .whereClause("LESS_THAN_LONG_COLUMN").lessThanLong(241241241L)
-                            .or()
-                            .whereClause("LESS_THAN_DOUBLE").lessThanDouble(2141241.124124D, "#.#######")
-                            .build();
-
+        String actualQuery = createCorrectUpdateQuery();
         assertQueries(expectedQuery, actualQuery);
+    }
+
+    @Test
+    void executingTime() {
+        short iterationNumber = 10_000;
+        long startTime = System.nanoTime();
+        for (int step = 0; step < iterationNumber; step++) {
+            createCorrectUpdateQuery();
+        }
+        long finishTime = System.nanoTime();
+        long executingTime = (finishTime - startTime) / 1_000_000;
+        logger.info(
+                () -> executingTime + " ms"
+        );
     }
 
     @Test
@@ -283,6 +242,63 @@ class UpdateQueryTest {
                 .createUpdateQuery("TABLE_NAME")
                 .column("SOME_COLUMN_NAME").setDouble(1241.352D, "#.###").build();
         Assertions.assertEquals("1241.352", getValueFromColumn(query, "SOME_COLUMN_NAME"));
+    }
+
+    private String createCorrectUpdateQuery() {
+        return new QueryFactory(new DanaosDataPreparer())
+                .createUpdateQuery("TABLE_NAME")
+                .column("SOME_TEXT").setString("Some text to 'FIRST_COLUMN'")
+                .column("INTEGER_COLUMN").setInteger(213412)
+                .column("TIMESTAMP").setTimestamp(1572966184855L)
+                .column("ACTIVE_DATE").setDate("2019-03-25")
+                .column("CODE").setLong(1241L)
+                .column("ACTIVE_FLAG").setBoolean(true, "Y", "N")
+                .column("IMO_NO").setDouble(9999.99999D, "#.##")
+                .column("RAW_COLUMN").setRawString("SEQUENCE.NEXTVAL")
+                .whereClause("GUID").equalsString("910fd190-4b12-a4cb-80ce-2853d923d3e7")
+                .and()
+                .whereClause("CREATED").equalsDate("2011-11-25")
+                .and()
+                .whereClause("COUNT_COLUMN").equalsInteger(1241412)
+                .and()
+                .whereClause("SOLD").equalsBoolean(true, "Y", "N")
+                .or()
+                .whereClause("TIMESTAMP").equalsTimestamp(12414141412414L)
+                .and()
+                .whereClause("TEMPERATURE").equalsDouble(1241.2414D, "#.##")
+                .and()
+                .whereClause("LENGTH").equalsLong(12414141412414L)
+                .and()
+                .whereClause("NULL_COLUMN").isNull()
+                .and()
+                .whereClause("NOT_NULL_COLUMN").nonNull()
+                .and()
+                .whereClause("COUNTRY").notEqualsString("Russian")
+                .and()
+                .whereClause("NOT_EQUALS_INTEGER_COLUMN").notEqualsInteger(12421412)
+                .or()
+                .whereClause("SOLD").notEqualsBoolean(true, "Y", "N")
+                .and()
+                .whereClause("LAST_UPDATED_AT").notEqualsLong(12412412421L)
+                .or()
+                .whereClause("HEIGHT").notEqualsDouble(21414.25323D, "#.##")
+                .or()
+                .whereClause("DATE_COLUMN").notEqualsDate("2011-11-25")
+                .and()
+                .whereClause("TIMESTAMP_COLUMN").notEqualsTimestamp(124124124L)
+                .and()
+                .whereClause("MORE_THAN_INTEGER_COLUMN").moreThanInteger(124141241)
+                .and()
+                .whereClause("MORE_THAN_LONG_COLUMN").moreThanLong(241241241L)
+                .or()
+                .whereClause("MORE_THAN_DOUBLE").moreThanDouble(2141241.124124D, "#.#######")
+                .and()
+                .whereClause("LESS_THAN_INTEGER_COLUMN").lessThanInteger(124141241)
+                .and()
+                .whereClause("LESS_THAN_LONG_COLUMN").lessThanLong(241241241L)
+                .or()
+                .whereClause("LESS_THAN_DOUBLE").lessThanDouble(2141241.124124D, "#.#######")
+                .build();
     }
 
     private String getValueFromColumn(String query, String column) {
