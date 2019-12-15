@@ -9,6 +9,7 @@ public class UpdateQuery implements ColumnProvider<UpdateColumn> {
 
     private final DataPreparer dataPreparer;
     private final StringBuilder query;
+    private final UpdatePool pool;
 
     boolean isFirstWhereClause;
 
@@ -23,6 +24,8 @@ public class UpdateQuery implements ColumnProvider<UpdateColumn> {
         isFirstWhereClause = true;
         this.dataPreparer = dataPreparer;
 
+        pool = new UpdatePool(this);
+
         query = new StringBuilder("UPDATE ")
                 .append(tableName)
                 .append(" SET ");
@@ -35,7 +38,7 @@ public class UpdateQuery implements ColumnProvider<UpdateColumn> {
         }
         query.append(columnName);
 
-        return new UpdateColumn(this);
+        return pool.getUpdateColumn();
     }
 
     UpdateQuery append(Object val) {
@@ -49,5 +52,9 @@ public class UpdateQuery implements ColumnProvider<UpdateColumn> {
 
     DataPreparer getDataPreparer() {
         return dataPreparer;
+    }
+
+    public UpdatePool getPool() {
+        return pool;
     }
 }

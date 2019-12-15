@@ -190,7 +190,9 @@ public class UpdateWhereClause implements WhereClauseValueProvider<UpdateWhereCl
                 .append(equalityCondition)
                 .append(val);
 
-        return new UpdateWhereClauseValue(updateQuery);
+        return updateQuery
+                .getPool()
+                .getUpdateWhereClauseValue();
     }
 
     private <T> void validValue(T val, String valueType) {

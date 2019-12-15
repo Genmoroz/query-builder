@@ -23,7 +23,9 @@ public class UpdateColumnValue implements ColumnProvider<UpdateColumn>, WhereCla
                 .append(", ")
                 .append(columnName);
 
-        return new UpdateColumn(updateQuery);
+        return updateQuery
+                .getPool()
+                .getUpdateColumn();
     }
 
     @Override
@@ -41,7 +43,9 @@ public class UpdateColumnValue implements ColumnProvider<UpdateColumn>, WhereCla
                     .append(" ")
                     .append(columnName);
         }
-        return new UpdateWhereClause(updateQuery);
+        return updateQuery
+                .getPool()
+                .getUpdateWhereClause();
     }
 
     @Override

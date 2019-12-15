@@ -77,6 +77,8 @@ public class UpdateColumn implements ColumnValueProvider<UpdateColumnValue> {
                 .append(" = ")
                 .append(supplier.get());
 
-        return new UpdateColumnValue(updateQuery);
+        return updateQuery
+                .getPool()
+                .getUpdateColumnValue();
     }
 }

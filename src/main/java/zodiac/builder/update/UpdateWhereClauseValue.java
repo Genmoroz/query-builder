@@ -13,7 +13,9 @@ public class UpdateWhereClauseValue implements BuilderLogicalOperatorsProvider {
         updateQuery
                 .append(" AND");
 
-        return new UpdateColumnValue(updateQuery);
+        return updateQuery
+                .getPool()
+                .getUpdateColumnValue();
     }
 
     @Override
@@ -21,7 +23,9 @@ public class UpdateWhereClauseValue implements BuilderLogicalOperatorsProvider {
         updateQuery
                 .append(" OR");
 
-        return new UpdateColumnValue(updateQuery);
+        return updateQuery
+                .getPool()
+                .getUpdateColumnValue();
     }
 
     @Override
