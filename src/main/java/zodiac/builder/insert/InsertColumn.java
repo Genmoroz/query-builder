@@ -18,7 +18,7 @@ public class InsertColumn implements ColumnValueProvider<InsertColumnValue> {
         insertQuery.addColumnValue(
                 preparer.prepareString(val)
         );
-        return new InsertColumnValue(insertQuery);
+        return returnInsertColumnValue();
     }
 
     @Override
@@ -26,7 +26,7 @@ public class InsertColumn implements ColumnValueProvider<InsertColumnValue> {
         insertQuery.addColumnValue(
                 preparer.prepareInteger(val)
         );
-        return new InsertColumnValue(insertQuery);
+        return returnInsertColumnValue();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class InsertColumn implements ColumnValueProvider<InsertColumnValue> {
         insertQuery.addColumnValue(
                 preparer.prepareLong(val)
         );
-        return new InsertColumnValue(insertQuery);
+        return returnInsertColumnValue();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class InsertColumn implements ColumnValueProvider<InsertColumnValue> {
         insertQuery.addColumnValue(
                 preparer.prepareDouble(val, formatPattern)
         );
-        return new InsertColumnValue(insertQuery);
+        return returnInsertColumnValue();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class InsertColumn implements ColumnValueProvider<InsertColumnValue> {
         insertQuery.addColumnValue(
                 preparer.prepareBoolean(condition, trueReplacement, falseReplacement)
         );
-        return new InsertColumnValue(insertQuery);
+        return returnInsertColumnValue();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class InsertColumn implements ColumnValueProvider<InsertColumnValue> {
         insertQuery.addColumnValue(
                 preparer.prepareDate(val)
         );
-        return new InsertColumnValue(insertQuery);
+        return returnInsertColumnValue();
     }
 
     @Override
@@ -66,12 +66,16 @@ public class InsertColumn implements ColumnValueProvider<InsertColumnValue> {
         insertQuery.addColumnValue(
                 preparer.prepareTimestamp(val)
         );
-        return new InsertColumnValue(insertQuery);
+        return returnInsertColumnValue();
     }
 
     @Override
     public InsertColumnValue setRawString(String val) {
         insertQuery.addColumnValue(val);
-        return new InsertColumnValue(insertQuery);
+        return returnInsertColumnValue();
+    }
+
+    private InsertColumnValue returnInsertColumnValue() {
+        return insertQuery.getPool().getInsertColumnValue();
     }
 }

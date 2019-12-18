@@ -24,6 +24,6 @@ public class InsertColumnValue implements ColumnProvider<InsertColumn>, Builder 
             throw new IllegalArgumentException("The column name cannot be null or empty");
         }
         insertQuery.addColumn(columnName);
-        return new InsertColumn(insertQuery);
+        return insertQuery.getPool().getInsertColumn();
     }
 }

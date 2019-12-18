@@ -28,7 +28,7 @@ class UpdateQueryTest {
 
     @Test
     void performanceTest() {
-        short iterationNumber = 10_000;
+        short iterationNumber = 30_000;
         long startTime = System.nanoTime();
         for (int step = 0; step < iterationNumber; step++) {
             createCorrectUpdateQuery();
@@ -36,7 +36,7 @@ class UpdateQueryTest {
         long finishTime = System.nanoTime();
         long executingTime = (finishTime - startTime) / 1_000_000;
         logger.info(
-                () -> executingTime + " ms"
+                () -> "30 000 iterations executed for " + executingTime + " ms"
         );
     }
 

@@ -17,20 +17,22 @@ class InsertQueryTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/correct-insert-query.sql", delimiter = '\n')
     void correctQuery(String expectedQuery) {
-        String actualQuery =
-                new QueryFactory(new DanaosDataPreparer())
-                .createInsertQuery("TABLE_NAME")
-                .column("STRING_COLUMN").setString("SOME TEXT FOR INSERT")
-                .column("STRING_RAW_COLUMN").setRawString("SEQ.NEXTVAL")
-                .column("INTEGER_COLUMN").setInteger(213412)
-                .column("LONG_COLUMN").setLong(124124142L)
-                .column("DOUBLE_COLUMN").setDouble(12412414.352532, "#.##")
-                .column("BOOLEAN_COLUMN").setBoolean(true, "Y", "N")
-                .column("DATE_COLUMN").setDate("2019-03-25")
-                .column("TIMESTAMP_COLUMN").setTimestamp(235235235L)
-                .build();
-
+        String actualQuery = createCorrectInsertQuery();
         assertQueries(expectedQuery, actualQuery);
+    }
+
+    @Test
+    void performanceTest() {
+        short iterationNumber = 30_000;
+        long startTime = System.nanoTime();
+        for (int step = 0; step < iterationNumber; step++) {
+            createCorrectInsertQuery();
+        }
+        long finishTime = System.nanoTime();
+        long executingTime = (finishTime - startTime) / 1_000_000;
+        logger.info(
+                () -> "30 000 iterations executed for " + executingTime + " ms"
+        );
     }
 
     @Test
@@ -77,6 +79,20 @@ class InsertQueryTest {
 
         Assertions.assertThrows(IllegalArgumentException.class, nullColumnExec, "The column name cannot be null or empty");
         Assertions.assertThrows(IllegalArgumentException.class, emptyColumnExec, "The column name cannot be null or empty");
+    }
+
+    private String createCorrectInsertQuery() {
+        return new QueryFactory(new DanaosDataPreparer())
+                .createInsertQuery("TABLE_NAME")
+                .column("STRING_COLUMN").setString("SOME TEXT FOR INSERT")
+                .column("STRING_RAW_COLUMN").setRawString("SEQ.NEXTVAL")
+                .column("INTEGER_COLUMN").setInteger(213412)
+                .column("LONG_COLUMN").setLong(124124142L)
+                .column("DOUBLE_COLUMN").setDouble(12412414.352532, "#.##")
+                .column("BOOLEAN_COLUMN").setBoolean(true, "Y", "N")
+                .column("DATE_COLUMN").setDate("2019-03-25")
+                .column("TIMESTAMP_COLUMN").setTimestamp(235235235L)
+                .build();
     }
 
     private void assertQueries(String expected, String actual) {

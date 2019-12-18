@@ -10,6 +10,7 @@ import java.util.Objects;
 public class InsertQuery implements ColumnProvider<InsertColumn> {
 
     private final DataPreparer preparer;
+    private final InsertPool pool;
 
     private List<String> columns;
     private List<String> columnValues;
@@ -25,6 +26,7 @@ public class InsertQuery implements ColumnProvider<InsertColumn> {
 
         this.preparer = preparer;
 
+        pool = new InsertPool(this);
         columns = new ArrayList<>();
         columnValues = new ArrayList<>();
         query = new StringBuilder("INSERT INTO ")
@@ -38,7 +40,7 @@ public class InsertQuery implements ColumnProvider<InsertColumn> {
             throw new IllegalArgumentException("The column name cannot be null or empty");
         }
         addColumn(columnName);
-        return new InsertColumn(this);
+        return getPool().getInsertColumn();
     }
 
     void addColumn(String columnName) {
@@ -81,5 +83,9 @@ public class InsertQuery implements ColumnProvider<InsertColumn> {
 
     DataPreparer getPreparer() {
         return preparer;
+    }
+
+    public InsertPool getPool() {
+        return pool;
     }
 }
